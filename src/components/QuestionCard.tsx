@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { Grid, Button, Typography } from "@material-ui/core";
 import { QuestionType } from "../_api/fetchQuestions";
 
 interface QuestionCardProps {
@@ -19,28 +20,36 @@ const QuestionCard: FC<QuestionCardProps> = ({
   nextQuestion,
 }) => {
   return (
-    <div>
-      <h3>
+    <Grid>
+      <Typography variant='h5'>
         Question {number + 1} / {totalQuestions}
-      </h3>
+      </Typography>
       <h2 dangerouslySetInnerHTML={{ __html: question.question }}></h2>
       <p>{question.category} </p>
-      <div>
+      <Grid container spacing={3}>
         {question.answers.map(answer => (
-          <button
-            key={answer.answer}
-            value={answer.answer}
-            disabled={isAnswered}
-            onClick={e => callback(e)}
-          >
-            {answer.answer}
-          </button>
+          <Grid item key={answer.answer} xs={12} sm={6} md={6}>
+            <Button
+              variant='outlined'
+              color='primary'
+              fullWidth
+              value={answer.answer}
+              disabled={isAnswered}
+              onClick={e => callback(e)}
+            >
+              {answer.answer}
+            </Button>
+          </Grid>
         ))}
-      </div>
+      </Grid>
       {isAnswered && number + 1 < totalQuestions && (
-        <button onClick={nextQuestion}>Next Question</button>
+        <Grid container direction='row' justify='flex-end' alignItems='center'>
+          <Button variant='contained' color='primary' onClick={nextQuestion}>
+            Next Question
+          </Button>
+        </Grid>
       )}
-    </div>
+    </Grid>
   );
 };
 
