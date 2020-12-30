@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
+// Components
 import QuestionCard from "./components/QuestionCard";
+import { Container, Grid, Typography, Button } from "@material-ui/core";
+// Types & Functions
+import { addQuestionToDB } from "./firebase/app";
 import { fetchQuestions, Difficulty, QuestionType, Answer } from "./_api/fetchQuestions";
 
-const TOTAL_QUESTIONS = 15;
-
+const TOTAL_QUESTIONS = 3;
 const App = () => {
   const [loading, setLoading] = useState(true);
   const [questions, setQuestions] = useState<QuestionType[]>([]);
@@ -16,6 +19,7 @@ const App = () => {
   useEffect(() => {
     (async () => {
       const questions = await fetchQuestions(TOTAL_QUESTIONS, Difficulty.easy);
+      await addQuestionToDB();
       setQuestions(questions);
       setLoading(false);
       setPlayable(true);
@@ -47,11 +51,17 @@ const App = () => {
   };
 
   return (
-    <div>
+    <Container>
       {loading ? (
         "Loaging..."
       ) : (
-        <>
+        <Grid
+          container
+          spacing={3}
+          direction='column'
+          justify='center'
+          alignItems='center'
+        >
           <QuestionCard
             question={questions[number]}
             number={number}
@@ -63,13 +73,21 @@ const App = () => {
 
           {/* CREATE COMPONENT */}
           {userAnswers.length === TOTAL_QUESTIONS && (
-            <>
-              <h2>
-                NICE! Your Score is {score} / {TOTAL_QUESTIONS}
-              </h2>
-              <button onClick={() => setShowAnswers(true)}>Show My Answers</button>
-              <button onClick={newGame}>Restart Game</button>
-            </>
+            <Grid item>
+              <Typography variant='h4'>
+                Your Score is {score} / {TOTAL_QUESTIONS}
+              </Typography>
+              <Button
+                variant='contained'
+                color='primary'
+                onClick={() => setShowAnswers(true)}
+              >
+                Show My Answers
+              </Button>
+              <Button variant='contained' color='secondary' onClick={newGame}>
+                Restart Game
+              </Button>
+            </Grid>
           )}
 
           {/* CREATE COMPONENT */}
@@ -85,9 +103,9 @@ const App = () => {
                 </p>
               </div>
             ))}
-        </>
+        </Grid>
       )}
-    </div>
+    </Container>
   );
 };
 
