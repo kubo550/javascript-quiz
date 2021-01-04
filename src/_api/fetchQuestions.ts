@@ -1,43 +1,25 @@
 import { suffleArray } from "./utils/shuffleArray";
 
-export enum Difficulty {
-    easy = "easy",
-    medium = "medium",
-    hard = "hard",
+export interface Answer {
+    correct: boolean,
+    answer: string
 }
 
-interface Question {
-    category: string,
-    correct_answer: string,
-    difficulty: string,
-    incorrect_answers: string[],
-    question: string,
-    type: string,
+export interface QuestionType {
+    _id: number,
+    explanationLink: string,
+    image: string,
+    answers: Answer[],
+    question: string
 }
 
-export type Answer = {
-    answer: string,
-    correct: boolean
-}
 
-export type QuestionType = Question & { answers: Answer[] }
+export const fetchQuestions = async () => {
 
-export const fetchQuestions = async (amount: number, difficulty: Difficulty): Promise<QuestionType[]> => {
-    const endpoint = `https://opentdb.com/api.php?amount=${amount}&difficulty=${difficulty}&type=multiple`
+    const endpoint = `https://quiz-questions.free.beeceptor.com/`
     const res = await fetch(endpoint);
-    const data = await res.json()
-    const questions: QuestionType[] = (data.results as Question[]).map(
-        (question) => ({
-            ...question,
-            answers: suffleArray([
-                question.correct_answer,
-                ...question.incorrect_answers
-            ]).map((answer) => ({
-                answer,
-                correct: answer === question.correct_answer
-            }))
-        })
-    );
+    const data: QuestionType[] = await res.json()
 
-    return questions
+
+    return data
 }
