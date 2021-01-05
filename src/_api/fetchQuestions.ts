@@ -21,5 +21,5 @@ export const fetchQuestions = async () => {
     const data: QuestionType[] = await res.json()
 
 
-    return data
+    return data.map(question => ({ ...question, answers: suffleArray(question.answers) }))
 }
