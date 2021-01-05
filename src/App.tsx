@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Grid, Paper, Typography, Button, Box } from "@material-ui/core";
+import { Container, Grid, Paper, Typography, Button } from "@material-ui/core";
 import { Answer, fetchQuestions, QuestionType } from "./_api/fetchQuestions";
 import QuestionCard from "./components/QeustionCard/QuestionCard";
 import NextButton from "./components/NextButton/NextButton";
