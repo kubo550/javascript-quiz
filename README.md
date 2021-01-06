@@ -1,6 +1,6 @@
 # Quiz App
 
-You can test your JavaScript ES6 skills with my quiz application build in react. App created with react.1
+You can test your JavaScript ES6 skills with my quiz application build in react. App created with react.
 
 ## Download 
 
