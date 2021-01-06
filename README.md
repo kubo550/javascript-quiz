@@ -3,7 +3,7 @@
 You can test your JavaScript ES6 skills with my quiz application build in react.
 
 
-123456
+1234567
 
 ## Download 
 
