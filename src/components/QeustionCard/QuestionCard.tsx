@@ -11,7 +11,7 @@ interface QuestionCardProps {
 const QuestionCard: FC<QuestionCardProps> = ({ question, handleClick, answered }) => {
   return (
     <Grid container spacing={3} justify='center' alignItems='center'>
-      <img src={question.image} style={{ maxWidth: "98%" }} alt='Question Image' />
+      <img src={question.image} style={{ maxWidth: "98%" }} alt='Question' />
       {question.answers.map((question, i) => (
         <Grid key={i} item xs={12} sm={6}>
           <Button
