@@ -1,5 +1,5 @@
 # Quiz App
-1
+12
 You can test your JavaScript ES6 skills with my quiz application build in react. App created with react.
 
 ## Download 
