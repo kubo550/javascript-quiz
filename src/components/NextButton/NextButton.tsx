@@ -7,12 +7,7 @@ interface ButtonProps {
 const NextButton: React.FC<ButtonProps> = ({ nextQuestion }) => {
   return (
     <Box style={{ textAlign: "right" }}>
-      <Button
-        variant='contained'
-        color='secondary'
-        onClick={nextQuestion}
-        style={{ margin: "35px 0 20px" }}
-      >
+      <Button variant='contained' color='secondary' onClick={nextQuestion}>
         next question
       </Button>
     </Box>
