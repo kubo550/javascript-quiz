@@ -4,6 +4,7 @@ import { Answer, fetchQuestions, QuestionType } from "./_api/fetchQuestions";
 import QuestionCard from "./components/QeustionCard/QuestionCard";
 import NextButton from "./components/NextButton/NextButton";
 import Stepps from "./components/Stepps/Stepps";
+import Results from "./components/Results/Results";
 
 const TOTAL_QUESTIONS = 15;
 
@@ -23,6 +24,11 @@ const App = () => {
       setLoading(false);
     })();
   }, []);
+  useEffect(() => {
+    if (answers.length === TOTAL_QUESTIONS) {
+      setPlayable(false);
+    }
+  }, [number, answers.length]);
 
   const callback = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (playable) {
@@ -56,54 +62,46 @@ const App = () => {
         style={{
           maxWidth: "860px",
           margin: "0 auto",
-          padding: "0 30px",
+          padding: "20px 30px",
           boxShadow: "0px 0px 10px 1px #000",
+          minHeight: "240px",
         }}
       >
-        {/* todo Dont display when game is over  */}
-        <Stepps number={number} />
-
-        <Typography variant='h5' style={{ marginTop: "10px" }}>
-          {questions[number].question}
-        </Typography>
-        <Grid
-          container
-          spacing={3}
-          direction='column'
-          justify='center'
-          alignItems='center'
-          style={{ marginTop: "20px" }}
-        >
-          <QuestionCard
-            question={questions[number]}
-            answered={answers.length === number + 1}
-            handleClick={callback}
-          />
-        </Grid>
-        <div style={{ margin: "35px 0 20px", minHeight: "30px" }}>
-          {answers.length === number + 1 && answers.length !== TOTAL_QUESTIONS && (
-            <NextButton nextQuestion={nextQuestion} />
-          )}
-          .
-        </div>
+        {playable && (
+          <>
+            <Stepps number={number} />
+            <Typography variant='h5' style={{ marginTop: "10px" }}>
+              {questions[number].question}
+            </Typography>
+            <Grid
+              container
+              spacing={3}
+              direction='column'
+              justify='center'
+              alignItems='center'
+              style={{ marginTop: "20px" }}
+            >
+              <QuestionCard
+                question={questions[number]}
+                answered={answers.length === number + 1}
+                handleClick={callback}
+              />
+            </Grid>
+            <div style={{ margin: "35px 0 20px", minHeight: "30px" }}>
+              {answers.length === number + 1 && answers.length !== TOTAL_QUESTIONS && (
+                <NextButton nextQuestion={nextQuestion} />
+              )}
+            </div>
+          </>
+        )}
 
         {/* todo Create Compoennt */}
-        {answers.length === TOTAL_QUESTIONS && (
-          <div style={{ display: "flex", justifyContent: "space-around" }}>
-            <Button
-              variant='contained'
-              color='secondary'
-              onClick={() => setShowAnswers(true)}
-            >
-              Show Answers
-            </Button>
-            <Typography variant='h5'>
-              Your Score {score} / {TOTAL_QUESTIONS}
-            </Typography>
-            <Button variant='contained' color='primary' onClick={newGame}>
-              Restart Game
-            </Button>
-          </div>
+        {!playable && (
+          <Results
+            score={score}
+            newGame={newGame}
+            setShowingAnswers={() => setShowAnswers(true)}
+          />
         )}
         {/* todo Create Compoennt */}
 
