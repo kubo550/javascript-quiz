@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Container, Grid, Paper, Typography, Button, Box } from "@material-ui/core";
+import { Container, Grid, Paper, Typography, Button } from "@material-ui/core";
 import { Answer, fetchQuestions, QuestionType } from "./_api/fetchQuestions";
 import QuestionCard from "./components/QeustionCard/QuestionCard";
 import NextButton from "./components/NextButton/NextButton";
+import Stepps from "./components/Stepps/Stepps";
 
 const TOTAL_QUESTIONS = 15;
 
@@ -51,66 +52,89 @@ const App = () => {
 
   return (
     <Container>
-      <Grid container spacing={3} justify='center' alignItems='center'>
-        <Paper>
-          <Typography variant='h5' style={{ marginTop: "20px" }}>
-            {number + 1} / {TOTAL_QUESTIONS}
-          </Typography>
+      <Paper
+        style={{
+          maxWidth: "860px",
+          margin: "0 auto",
+          padding: "0 30px",
+          boxShadow: "0px 0px 10px 1px #000",
+        }}
+      >
+        {/* todo Dont display when game is over  */}
+        <Stepps number={number} />
 
-          <Typography variant='h5' style={{ marginTop: "20px" }}>
-            {questions[number].question}
-          </Typography>
-          <Grid
-            container
-            spacing={3}
-            direction='column'
-            justify='center'
-            alignItems='center'
-            style={{ marginTop: "20px" }}
-          >
-            <QuestionCard
-              question={questions[number]}
-              answered={answers.length === number + 1}
-              handleClick={callback}
-            />
-          </Grid>
+        <Typography variant='h5' style={{ marginTop: "10px" }}>
+          {questions[number].question}
+        </Typography>
+        <Grid
+          container
+          spacing={3}
+          direction='column'
+          justify='center'
+          alignItems='center'
+          style={{ marginTop: "20px" }}
+        >
+          <QuestionCard
+            question={questions[number]}
+            answered={answers.length === number + 1}
+            handleClick={callback}
+          />
+        </Grid>
+        <div style={{ margin: "35px 0 20px", minHeight: "30px" }}>
           {answers.length === number + 1 && answers.length !== TOTAL_QUESTIONS && (
             <NextButton nextQuestion={nextQuestion} />
           )}
-          {answers.length === TOTAL_QUESTIONS && (
-            <>
-              <Typography variant='subtitle1'>
-                Your Score {score} / {TOTAL_QUESTIONS}
-              </Typography>
-              <Button variant='contained' color='primary' onClick={newGame}>
-                Restart Game
-              </Button>
-              <Button
-                variant='contained'
-                color='secondary'
-                onClick={() => setShowAnswers(true)}
-              >
-                Show Answers
-              </Button>
-            </>
-          )}
+          .
+        </div>
 
-          {showAnswers &&
-            answers.map((answer, i) => (
-              <div key={i}>
-                <h4> Question #{i + 1} </h4>
+        {/* todo Create Compoennt */}
+        {answers.length === TOTAL_QUESTIONS && (
+          <div style={{ display: "flex", justifyContent: "space-around" }}>
+            <Button
+              variant='contained'
+              color='secondary'
+              onClick={() => setShowAnswers(true)}
+            >
+              Show Answers
+            </Button>
+            <Typography variant='h5'>
+              Your Score {score} / {TOTAL_QUESTIONS}
+            </Typography>
+            <Button variant='contained' color='primary' onClick={newGame}>
+              Restart Game
+            </Button>
+          </div>
+        )}
+        {/* todo Create Compoennt */}
 
-                <img src={questions[i].image} alt='Question' />
-                <h5 className={answer.correct ? "correct" : "incorrect"}>
+        {showAnswers && (
+          <Grid container spacing={3}>
+            {answers.map((answer, i) => (
+              <Grid key={i} item xs={12} sm={6}>
+                <Typography variant='h4' align='center'>
+                  Question #{i + 1}
+                </Typography>
+
+                <img
+                  style={{ maxWidth: "100%" }}
+                  src={questions[i].image}
+                  alt='Question'
+                />
+                <Typography
+                  variant='h5'
+                  className={answer.correct ? "correct" : "incorrect"}
+                >
                   Your Answer: {answer.answer}
-                </h5>
-                <h5>
-                  Correct Answer: {questions[i].answers.filter(a => a.correct)[0].answer}
-                </h5>
-              </div>
+                </Typography>
+                <Typography variant='h5'>
+                  Correct Answer:
+                  {questions[i].answers.filter(a => a.correct)[0].answer}
+                </Typography>
+              </Grid>
             ))}
-        </Paper>
-      </Grid>
+          </Grid>
+        )}
+      </Paper>
     </Container>
   );
 };
